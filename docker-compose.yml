@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  gateway:
+    build: .
+    container_name: fastapi_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    networks:
+      - gateway_network
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - gateway_network
+
+networks:
+  gateway_network:
+    driver: bridge
